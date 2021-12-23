@@ -48,7 +48,7 @@ class Robot
   end
 
   def warn(message)
-    $stdout.puts message
+    raise message
   end
 
   def respond(round, response)
@@ -67,17 +67,17 @@ class Robot
         @possible[i].delete char
       end
 
-      $stdout.print COLORS[status], char, RESET
+      print COLORS[status], char, RESET
     end
-    $stdout.puts
+    puts
   end
 
   def win(round)
-    $stderr.puts format("Correct answer in %d/%d", round, @rounds)
+    printf "Correct answer in %d/%d\n", round, @rounds
   end
 
   def lose(word)
-    $stderr.puts "#{RED}#{word}#{RESET}"
+    puts "#{RED}#{word}#{RESET}"
   end
 
   def inspect

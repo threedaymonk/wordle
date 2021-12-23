@@ -13,27 +13,33 @@ class CLI
   end
 
   def guess(round)
-    $stdout.printf format("Guess %d/%d > ", round, @rounds)
-    $stdout.flush
+    printf "Guess %d/%d > ", round, @rounds
+    flush
     @guess = gets.chomp.upcase
   end
 
   def warn(message)
-    $stdout.puts message
+    puts message
   end
 
   def respond(round, response)
     @guess.chars.zip(response).each do |char, status|
-      $stdout.print COLORS[status], char, RESET
+      print COLORS[status], char, RESET
     end
-    $stdout.puts
+    puts
   end
 
   def win(round)
-    $stderr.puts format("Correct answer in %d/%d", round, @rounds)
+    puts format("Correct answer in %d/%d", round, @rounds)
   end
 
   def lose(word)
-    $stderr.puts word
+    puts word
+  end
+
+private
+
+  def flush
+    $stdout.flush
   end
 end
