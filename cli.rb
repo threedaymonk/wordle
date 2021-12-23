@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CLI
   COLORS = {
     correct:   "\e[0;42;30m",
