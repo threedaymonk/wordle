@@ -10,7 +10,8 @@ class Robot
 
   RESET = "\e[0m"
 
-  def initialize(dictionary)
+  def initialize(dictionary, output: $stdout)
+    @output = output
     @dictionary = dictionary
     @letter_frequencies = Hash.new { |h, k| h[k] = 1 }
     @dictionary.each do |word|
@@ -67,17 +68,17 @@ class Robot
         @possible[i].delete char
       end
 
-      print COLORS[status], char, RESET
+      @output.print COLORS[status], char, RESET
     end
-    puts
+    @output.puts
   end
 
   def win(round)
-    printf "Correct answer in %d/%d\n", round, @rounds
+    @output.printf "Correct answer in %d/%d\n", round, @rounds
   end
 
   def lose(word)
-    puts "#{RED}#{word}#{RESET}"
+    @output.puts "#{RED}#{word}#{RESET}"
   end
 
   def inspect
@@ -98,7 +99,6 @@ private
 
   def most_plausible
     possible_words
-      .tap { |a| p a }
       .map { |w| [w, (w.chars.uniq - @guessed_letters.to_a).length] }
       .sort_by(&:last)
       .last
