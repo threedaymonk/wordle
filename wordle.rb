@@ -8,8 +8,8 @@ class Wordle
     @dictionary = Set.new(dictionary)
   end
 
-  def play(player)
-    word = @dictionary.to_a.sample
+  def play(player, word = nil)
+    word ||= @dictionary.to_a.sample
     player.begin ROUNDS, LENGTH
 
     (1..ROUNDS).each do |round|
