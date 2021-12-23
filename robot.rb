@@ -35,10 +35,15 @@ class Robot
 
   def guess(round)
     @guess =
-      if round == 6 || possible_words.length < 4
+      case round
+      when 1
+        "CLEAN"
+      when 2
+        "RIOTS"
+      when 6
         most_plausible
       else
-        most_informative
+        possible_words.length < 4 ? most_plausible : most_informative
       end
 
     @guessed_words << @guess
