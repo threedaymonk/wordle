@@ -1,58 +1,93 @@
 require "set"
 
 class Wordle
-  CORRECT   = "\e[0;42;30m"
-  MISPLACED = "\e[0;43;30m"
-  ABSENT    = "\e[0;40;37m"
-  RESET     = "\e[0m"
+  ROUNDS = 6
+  LENGTH = 5
 
   def initialize(dictionary)
     @dictionary = Set.new(dictionary)
   end
 
-  def prompt(number)
-    loop do
-      $stdout.printf format("Guess %d/6 > ", number)
-      $stdout.flush
-      guess = gets.chomp.upcase
-      return guess if @dictionary.include?(guess)
-
-      $stdout.puts "Word not in dictionary"
-    end
-  end
-
-  def play
+  def play(player)
     word = @dictionary.to_a.sample
+    player.begin ROUNDS, LENGTH
 
-    (1..6).each do |round|
-      guess = prompt(round)
-      put_guess guess, word
+    (1..ROUNDS).each do |round|
+      guess = nil
+      loop do
+        guess = player.guess round
+        break if @dictionary.include?(guess)
 
+        player.warn "Word not in dictionary"
+      end
+
+      player.respond round, build_response(guess, word)
       if guess == word
-        $stderr.puts format("Correct answer in %d/6", round)
+        player.win round
         return
       end
     end
 
-    puts word
+    player.lose word
   end
 
-  def put_guess(guess, word)
-    guess.chars.zip(word.chars).each do |g, w|
+  def build_response(guess, word)
+    guess.chars.zip(word.chars).map { |g, w|
       if g == w
-        $stdout.print CORRECT
+        :correct
       elsif word.include?(g)
-        $stdout.print MISPLACED
+        :misplaced
       else
-        $stdout.print ABSENT
+        :absent
       end
+    }
+  end
 
-      $stdout.print g, RESET
-    end
-    $stdout.puts
+  def inspect
+    "#<Wordle:#{object_id}>"
   end
 end
 
+class CLI
+  COLORS = {
+    correct:   "\e[0;42;30m",
+    misplaced: "\e[0;43;30m",
+    absent:    "\e[0;40;37m"
+  }
+
+  RESET = "\e[0m"
+
+  def begin(rounds, length)
+    @rounds = rounds
+    @length = length
+  end
+
+  def guess(round)
+    $stdout.printf format("Guess %d/6 > ", round)
+    $stdout.flush
+    @guess = gets.chomp.upcase
+  end
+
+  def warn(message)
+    $stdout.puts message
+  end
+
+  def respond(round, response)
+    @guess.chars.zip(response).each do |char, status|
+      $stdout.print COLORS[status], char, RESET
+    end
+    $stdout.puts
+  end
+
+  def win(round)
+    $stderr.puts format("Correct answer in %d/%d", round, @rounds)
+  end
+
+  def lose(word)
+    $stderr.puts word
+  end
+end
 
 words = File.read("5.txt").chomp.split(/\n/)
-Wordle.new(words).play
+player = CLI.new
+Wordle.new(words).play(player)
