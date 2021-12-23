@@ -24,11 +24,12 @@ class Wordle
       player.respond round, build_response(guess, word)
       if guess == word
         player.win round
-        return
+        return round
       end
     end
 
     player.lose word
+    return nil
   end
 
   def build_response(guess, word)
