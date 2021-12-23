@@ -1,4 +1,6 @@
+require "bundler/setup"
 require "benchmark"
+require "progressbar"
 require_relative "./wordle"
 require_relative "./robot"
 
@@ -7,13 +9,15 @@ words = File.read("5.txt").chomp.split(/\n/)
 player = Robot.new(words, output: devnull)
 wordle = Wordle.new(words)
 
-n = 1000
+SAMPLES = 1000
 results = []
 
 Benchmark.benchmark do |bm|
   bm.report do
-    n.times do |i|
+    pb = ProgressBar.create(title: "Benchmarking", total: SAMPLES)
+    SAMPLES.times do |i|
       results << wordle.play(player)
+      pb.increment
     end
   end
 end
@@ -25,5 +29,5 @@ end
 
 aggregated.sort_by { |a| a.first || 0 }.each do |k, v|
   key = k ? k.to_s : "F"
-  printf "%s: %d%%\n", key, (v * 100.0 / n).round
+  printf "%s: %d%%\n", key, (v * 100.0 / SAMPLES).round
 end
