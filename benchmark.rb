@@ -11,7 +11,7 @@ words = File.read("5.txt").chomp.split(/\n/)
 player = Robot.new(words, output: devnull)
 wordle = Wordle.new(words)
 
-SAMPLES = 1000
+SAMPLES = (ARGV[0] || "1000").to_i
 results = []
 
 Benchmark.benchmark do |bm|
