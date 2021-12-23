@@ -32,7 +32,7 @@ class Robot
 
   def guess(round)
     @guess =
-      if round == 6 || possible_words.length < 3
+      if round == 6 || possible_words.length < 4
         most_plausible
       else
         most_informative
