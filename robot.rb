@@ -123,21 +123,3 @@ private
       .first
   end
 end
-
-require_relative "./wordle"
-words = File.read("5.txt").chomp.split(/\n/)
-player = Robot.new(words)
-wordle = Wordle.new(words)
-
-results = []
-1000.times do |i|
-  puts "Round #{i}"
-  results << wordle.play(player)
-end
-
-aggregated = Hash.new { |h,k| h[k] = 0 }
-results.each do |r|
-  aggregated[r] += 1
-end
-
-p aggregated
