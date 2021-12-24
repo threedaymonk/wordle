@@ -97,11 +97,11 @@ private
 
   def possible_words
     @__possible_words ||= (
-      regexp = Regexp.new(
+      possible_re = Regexp.new(
         "^" + @possible.map { |a| "[" + a.join("") + "]" }.join + "$"
       )
       @dictionary
-        .select { |w| w =~ regexp }
+        .select { |w| w =~ possible_re }
         .reject { |w| @guessed_words.include?(w) }
         .select { |w| @required_letters.all? { |a| w.include?(a) } }
     )
@@ -116,11 +116,11 @@ private
   end
 
   def most_informative
-    regexp = Regexp.new(
+    use_available_letters = Regexp.new(
       "^" + ("[" + @possible_letters.join("") + "]") * @length + "$"
     )
     @dictionary
-      .select { |w| w =~ regexp }
+      .select { |w| w =~ use_available_letters }
       .reject { |w| @guessed_words.include?(w) }
       .map { |w| [
         w,
