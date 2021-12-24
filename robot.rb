@@ -101,7 +101,7 @@ private
     @dictionary
       .select { |w| w =~ regexp }
       .reject { |w| @guessed_words.include?(w) }
-      .select { |w| @required_letters.to_a.all? { |a| w.include?(a) } }
+      .select { |w| @required_letters.all? { |a| w.include?(a) } }
   end
 
   def most_plausible
@@ -114,7 +114,7 @@ private
 
   def most_informative
     regexp = Regexp.new(
-      "^" + ("[" + @possible_letters.to_a.join("") + "]") * @length + "$"
+      "^" + ("[" + @possible_letters.join("") + "]") * @length + "$"
     )
     @dictionary
       .select { |w| w =~ regexp }
