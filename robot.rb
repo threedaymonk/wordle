@@ -124,9 +124,9 @@ private
       .reject { |w| @guessed_words.include?(w) }
       .map { |w| [
         w,
-        (w.chars.uniq - @guessed_letters.to_a).map { |c|
-          @letter_frequencies[c]
-        }.inject(0, &:+)
+        (w.chars.uniq - @guessed_letters.to_a).inject(0) { |a, c|
+          a + @letter_frequencies[c]
+        }
       ] }
       .sort_by(&:last)
       .last
