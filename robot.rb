@@ -109,10 +109,8 @@ private
 
   def most_plausible
     possible_words
-      .map { |w| [w, (w.chars.uniq - @guessed_letters.to_a).length] }
-      .sort_by(&:last)
+      .sort_by { |w| remaining_freq_score(w) }
       .last
-      .first
   end
 
   def most_informative
