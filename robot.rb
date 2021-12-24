@@ -42,13 +42,13 @@ class Robot
       when 2
         "PRANG"
       when 3
-        possible_words.length < 4 ? most_plausible : "DUTCH"
+        possible_words.length <= 3 ? most_plausible : "DUTCH"
       when 4
-        possible_words.length < 4 ? most_plausible : "WOMBY"
+        possible_words.length <= 3 ? most_plausible : "WOMBY"
       when 6
         most_plausible
       else
-        possible_words.length < 4 ? most_plausible : most_informative
+        possible_words.length <= 3 ? most_plausible : most_informative
       end
 
     @guessed_words << @guess
