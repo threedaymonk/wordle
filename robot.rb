@@ -41,6 +41,8 @@ class Robot
         "CLEAN"
       when 2
         "RIOTS"
+      when 3
+        "DUMPY"
       when 6
         most_plausible
       else
