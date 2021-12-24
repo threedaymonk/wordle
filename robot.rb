@@ -42,9 +42,9 @@ class Robot
       when 2
         "PRANG"
       when 3
-        "DUTCH"
+        possible_words.length < 4 ? most_plausible : "DUTCH"
       when 4
-        "WOMBY"
+        possible_words.length < 4 ? most_plausible : "WOMBY"
       when 6
         most_plausible
       else
