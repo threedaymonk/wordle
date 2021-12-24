@@ -31,6 +31,7 @@ class Robot
     @guessed_letters = Set.new
     @required_letters = Set.new
     @possible_letters = Set.new(("A".."Z").to_a)
+    @__possible_words = nil
   end
 
   def guess(round)
