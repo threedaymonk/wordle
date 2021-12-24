@@ -122,14 +122,13 @@ private
     @dictionary
       .select { |w| w =~ use_available_letters }
       .reject { |w| @guessed_words.include?(w) }
-      .map { |w| [
-        w,
-        (w.chars.uniq - @guessed_letters.to_a).inject(0) { |a, c|
-          a + @letter_frequencies[c]
-        }
-      ] }
-      .sort_by(&:last)
+      .sort_by { |w| remaining_freq_score(w) }
       .last
-      .first
+  end
+
+  def remaining_freq_score(word)
+    (word.chars.uniq - @guessed_letters.to_a).inject(0) { |a, c|
+      a + @letter_frequencies[c]
+    }
   end
 end
