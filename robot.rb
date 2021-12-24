@@ -78,6 +78,7 @@ class Robot
       @output.print COLORS[status], char, RESET
     end
     @output.puts
+    @__possible_words = nil
   end
 
   def win(round)
@@ -95,13 +96,15 @@ class Robot
 private
 
   def possible_words
-    regexp = Regexp.new(
-      "^" + @possible.map { |a| "[" + a.join("") + "]" }.join + "$"
+    @__possible_words ||= (
+      regexp = Regexp.new(
+        "^" + @possible.map { |a| "[" + a.join("") + "]" }.join + "$"
+      )
+      @dictionary
+        .select { |w| w =~ regexp }
+        .reject { |w| @guessed_words.include?(w) }
+        .select { |w| @required_letters.all? { |a| w.include?(a) } }
     )
-    @dictionary
-      .select { |w| w =~ regexp }
-      .reject { |w| @guessed_words.include?(w) }
-      .select { |w| @required_letters.all? { |a| w.include?(a) } }
   end
 
   def most_plausible
