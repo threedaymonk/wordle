@@ -38,11 +38,13 @@ class Robot
     @guess =
       case round
       when 1
-        "CLEAN"
+        "FILES"
       when 2
-        "RIOTS"
+        "PRANG"
       when 3
-        "DUMPY"
+        "DUTCH"
+      when 4
+        "WOMBY"
       when 6
         most_plausible
       else
