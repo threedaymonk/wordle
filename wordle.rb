@@ -20,7 +20,7 @@ class Wordle
         guess = player.guess round
         break if @dictionary.include?(guess)
 
-        player.warn "Word not in dictionary"
+        player.warn "Word '#{guess}' not in dictionary"
       end
 
       player.respond round, build_response(guess, word)
