@@ -31,5 +31,5 @@ end
 
 aggregated.sort_by { |a| a.first || 0 }.each do |k, v|
   key = k ? k.to_s : "F"
-  printf "%s: %2d%%\n", key, (v * 100.0 / SAMPLES).round
+  printf "%s: %2.2f%%\n", key, (v * 100.0 / SAMPLES)
 end
