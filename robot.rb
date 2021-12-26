@@ -12,6 +12,8 @@ class Robot
 
   RESET = "\e[0m"
 
+  GUESSES = %w[ FILES PRANG DUTCH WOMBY ]
+
   def initialize(dictionary, output: $stdout)
     @output = output
     @dictionary = dictionary
@@ -37,14 +39,10 @@ class Robot
   def guess(round)
     @guess =
       case round
-      when 1
-        "FILES"
-      when 2
-        "PRANG"
-      when 3
-        possible_words.length <= 3 ? most_plausible : "DUTCH"
-      when 4
-        possible_words.length <= 3 ? most_plausible : "WOMBY"
+      when 1, 2
+        GUESSES[round - 1]
+      when 3, 4
+        possible_words.length <= 3 ? most_plausible : GUESSES[round - 1]
       when 6
         most_plausible
       else
