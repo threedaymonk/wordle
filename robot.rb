@@ -12,7 +12,7 @@ class Robot
 
   RESET = "\e[0m"
 
-  GUESSES = %w[ FILES PRANG DUTCH WOMBY ]
+  GUESSES = %w[ ALTER PINCH WOMBS FUDGY ]
 
   def initialize(dictionary, output: $stdout)
     @output = output
