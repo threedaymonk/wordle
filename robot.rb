@@ -37,17 +37,7 @@ class Robot
   end
 
   def guess(round)
-    @guess =
-      case round
-      when 1, 2
-        GUESSES[round - 1]
-      when 3, 4
-        possible_words.length <= 3 ? most_plausible : GUESSES[round - 1]
-      when 6
-        most_plausible
-      else
-        possible_words.length <= 3 ? most_plausible : most_informative
-      end
+    @guess = best_guess(round)
 
     @guessed_words << @guess
 
@@ -97,6 +87,14 @@ class Robot
   end
 
 private
+
+  def best_guess(round)
+    return GUESSES[round - 1] if round <= 2
+    return most_plausible if round == 6
+    return most_plausible if possible_words.length <= 3
+
+    GUESSES[round - 1] || most_informative
+  end
 
   def possible_words
     @__possible_words ||= (
